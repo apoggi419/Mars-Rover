@@ -1,3 +1,4 @@
+//---Main--------------------------------------------------------->
 var obstacles = [
   [null, "rock", null, null, null, "rock", null, null, null, null],
   [null, null, null, null, null, "tree", null, null, "rock", null],
@@ -10,8 +11,7 @@ var obstacles = [
   ["rock", null, null, "tree", null, null, null, null, null, null],
   [null, "tree", null, null, null, "rock", null, null, null, null],
 ];
-//---Main--------------------------------------------------------->
-var commands = "rlfflfff";
+var commands = "rlfflfffffrffrflrlflrllflrfflrllfllrrrffflflllfrlflrflrlflffflrrfllflrff";
 var rover1 = new Rover("N",0,0,[],[],[]);
 var rover2 = new Rover("N",10,10,[],[],[]);
 startGame(rover1, rover2, commands);
@@ -28,13 +28,15 @@ function startGame(rover1, rover2, commands){
   var i = 0;
   while(commands[i]){
     if(i % 2 == 0){
+      console.log("rover1 receives a command!");
       callCommands(rover1,commands[i]);
     } else{
+      console.log("rover2 receives a command!");
       callCommands(rover2,commands[i]);
     }
     i++;
   }
-  console.log("\nTravel Log of Rover1:\n" + rover1.travelLog +"\nObstacle Log of Rover1:\n" + rover1.obstacleLog + "\nTravel Log of Rover2:\n" + rover2.travelLog +"\nObstacle Log of Rover2:\n" + rover2.obstacleLog);
+  console.log("\nTravel Log of rover1:\n" + rover1.travelLog +"\nObstacle Log of rover1:\n" + rover1.obstacleLog + "\nTravel Log of rover2:\n" + rover2.travelLog +"\nObstacle Log of rover2:\n" + rover2.obstacleLog);
   return;
 }
 function callCommands(rover,command){
@@ -150,21 +152,21 @@ function moveBackwards(rover){
     return;
   }
   if(obstacles[rover.x][rover.y]){
-    console.log("A " + obstacles[rover.x][rover.y] + " is blocking your path!\n obstacles[rover.x][rover.y] has been logged at (" + rover.x + "," + rover.y + ")");
+    console.log("A " + obstacles[rover.x][rover.y] + " is blocking your path!\n" + obstacles[rover.x][rover.y] + " has been logged at (" + rover.x + "," + rover.y + ")");
     rover.obstacleLog.push("(" + rover.x + "," + rover.y + ")");
     rover.x = previousX;
     rover.y = previousY;
     return;
   }
-  if(rover.x == currentPosition[0] && rover.y == currentPosition[1]){
+  if((rover.x == rover1.currentPosition[0] && rover.y == rover1.currentPosition[1]) || (rover.x == rover2.currentPosition[0] && rover.y == rover2.currentPosition[1])){
     console.log("Another rover is blocking your path!");
     rover.x = previousX;
     rover.y = previousY;
     return;
   }
-  console.log("The rover has moved forward! The new position is (" + rover.x + "," + rover.y + ")!" );
+  console.log("The rover has moved backwards! The new position is (" + rover.x + "," + rover.y + ")!" );
   rover.travelLog.push("(" + rover.x + "," + rover.y + ")");
-  currentPosition[0] = rover.x;
-  currentPosition[1] = rover.y;
+  rover.currentPosition[0] = rover.x;
+  rover.currentPosition[1] = rover.y;
   return;
 }
